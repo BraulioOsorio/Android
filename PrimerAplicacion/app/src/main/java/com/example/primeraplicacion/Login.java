@@ -39,7 +39,7 @@ public class Login extends AppCompatActivity {
         System.out.println(cedulaUsuario);
         if(!nombreUsuario.equals("") && !cedulaUsuario.equals("")){
             consumoPostJson(nombreUsuario,cedulaUsuario);
-            Intent intencion = new Intent(getApplicationContext(), PreguntasApi.class);
+            Intent intencion = new Intent(getApplicationContext(), Puntajes.class);
             intencion.putExtra("nombreUsuario", nombreUsuario);
             intencion.putExtra("cedulaUsuario", cedulaUsuario);
             startActivity(intencion);
@@ -54,7 +54,7 @@ public class Login extends AppCompatActivity {
         System.out.println("Iniciando consumo");
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        String url = "http://192.168.143.31/preguntas/InsertUser.php";
+        String url = "http://192.168.244.151/preguntas/InsertUser.php";
 
         StringRequest solicitud =  new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override

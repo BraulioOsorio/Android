@@ -16,6 +16,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".DetallePreguntas"
+            android:exported="false" />
+        <activity
+            android:name=".Puntajes"
+            android:exported="false" />
+        <activity
             android:name=".Login"
             android:exported="true">
             <intent-filter>
@@ -59,8 +65,7 @@
             android:exported="false" />
         <activity
             android:name=".PreguntasApi"
-            android:exported="false"/>
-
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -13,7 +13,7 @@ window.onload = function() {
     });
 
 
-    getClients("http://192.168.1.7/preguntas/ObtenerPuntajes.php");
+    getClients("http://192.168.244.151/preguntas/ObtenerPuntajes.php");
 }
 
 function getClients(endpoint) {
@@ -41,7 +41,7 @@ function getClients(endpoint) {
     });
 }
 function abrirModal(indice){
-    getpro("http://192.168.1.7/preguntas/ObtenerPreguntasPuntaje.php",indice);
+    getpro("http://192.168.244.151/preguntas/ObtenerPreguntasPuntaje.php",indice);
     modal.show();
 
 }
