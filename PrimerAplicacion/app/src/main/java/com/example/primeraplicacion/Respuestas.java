@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -96,7 +97,7 @@ public class Respuestas extends AppCompatActivity {
 
     public void enviarRespuestasYPuntaje(String cedula, Map<String, String> respuestas, int puntaje) {
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        String url = "http://192.168.244.151/preguntas/InsertRespuestas.php";
+        String url = "http://192.168.1.2/preguntas/InsertRespuestas.php";
 
         JSONObject jsonBody = new JSONObject();
         try {
@@ -113,6 +114,18 @@ public class Respuestas extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         System.out.println("El servidor POST responde OK");
                         System.out.println(response.toString());
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                // Código que se ejecutará después de 5 segundos
+                                Intent intencion = new Intent(getApplicationContext(), Puntajes.class);
+                                intencion.putExtra("nombreUsuario", nombre);
+                                intencion.putExtra("cedulaUsuario", cedula);
+                                startActivity(intencion);
+                                finish();
+                            }
+                        }, 5000); // 5000 milisegundos = 5 segundos
+
                     }
                 },
                 new Response.ErrorListener() {

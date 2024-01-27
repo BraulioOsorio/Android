@@ -67,8 +67,8 @@ public class PreguntasApi extends AppCompatActivity {
     private void cargarPreguntasAleatorias() {
         RequestQueue queue = Volley.newRequestQueue(this);
         //Sena 192.168.244.151
-        //Casa 192.168.1.7
-        String url = "http://192.168.244.151/preguntas/ObtenerPregunta.php";
+        //Casa 192.168.1.2
+        String url = "http://192.168.1.2/preguntas/ObtenerPregunta.php";
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {

@@ -17,6 +17,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -44,7 +45,7 @@ public class Puntajes extends AppCompatActivity {
         Bundle datosUsuario = getIntent().getExtras();
         nombre = datosUsuario.getString("nombreUsuario");
         cedula = datosUsuario.getString("cedulaUsuario");
-        obtenerPuntajes("http://192.168.244.151/preguntas/ObtenerPreguntasPuntaje.php", String.valueOf(cedula));
+        obtenerPuntajes("http://192.168.1.2/preguntas/ObtenerPuntajes.php", String.valueOf(cedula));
     }
 
     public void abrirModal(View view, int id) {
@@ -60,108 +61,54 @@ public class Puntajes extends AppCompatActivity {
         startActivity(intencion);
         finish();
     }
+    public void salir(View vista) {
+        Intent intencion = new Intent(getApplicationContext(), Login.class);
+        startActivity(intencion);
+        finish();
+    }
 
-    private void obtenerPuntajes(String url, final String idPuntaje) {
+    public void obtenerPuntajes(String url, final String cedula) {
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext()) ;
 
-
-        RequestQueue queue = Volley.newRequestQueue(this);
-
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-                Request.Method.POST,
-                url,
-                null,
-                new Response.Listener<JSONArray>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
                     @Override
-                    public void onResponse(JSONArray response) {
+                    public void onResponse(String response) {
+                        // Procesar la respuesta aquí
                         procesarRespuesta(response);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        // Manejar errores aquí
                         error.printStackTrace();
-                    }
-                }
-        );
-
-        queue.add(jsonArrayRequest);
-    }
-
-    public void consumoPostJson(String url, final String idPuntaje) {
-        System.out.println("Iniciando consumo");
-
-        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-
-        StringRequest solicitud = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    Log.d("DetallePreguntas", "El servidor POST responde OK");
-                    JSONObject jsonObject = new JSONObject(response);
-                    Log.d("DetallePreguntas", jsonObject.toString());
-
-                    JSONArray registrosArray = jsonObject.getJSONArray("registros");
-
-                    for (int i = 0; i < registrosArray.length(); i++) {
-                        JSONObject registro = registrosArray.getJSONObject(i);
-
-                        String descripcion = registro.getString("descripcion");
-                        String respuesta = registro.getString("respuesta");
-                        String solucion = obtenerSolucion(i);
-
-                        TableRow row = new TableRow(DetallePreguntas.this);
-                        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT);
-                        row.setLayoutParams(lp);
-
-                        agregarTextView(row, descripcion, Gravity.CENTER);
-                        agregarTextView(row, respuesta, Gravity.CENTER);
-                        agregarTextView(row, solucion, Gravity.CENTER);
-
-                        if (tableLayoutDetalle != null) {
-                            tableLayoutDetalle.addView(row);
-                        } else {
-                            Log.e("DetallePreguntas", "tableLayout es nulo al intentar agregar una fila");
-                        }
-                    }
-
-                } catch (JSONException e) {
-                    Log.e("DetallePreguntas", "El servidor POST responde con un error:");
-                    Log.e("DetallePreguntas", e.getMessage());
-                }
-            }
-        },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        System.out.println("El servidor POST responde con un error:");
-                        System.out.println(error.getMessage());
                     }
                 }) {
             @Override
-            public String getBodyContentType() {
-                return "application/json; charset=utf-8";
-            }
-
-            @Override
-            public byte[] getBody() {
-                try {
-                    JSONObject jsonParams = new JSONObject();
-                    jsonParams.put("id_puntaje", idPuntaje);
-                    return jsonParams.toString().getBytes("utf-8");
-                } catch (JSONException e) {
-                    System.out.println("Error al construir el cuerpo de la solicitud JSON");
-                    return null;
-                } catch (UnsupportedEncodingException e) {
-                    throw new RuntimeException(e);
-                }
+            protected Map<String, String> getParams() {
+                // Agregar los parámetros de la solicitud POST
+                Map<String, String> params = new HashMap<>();
+                params.put("cedula", cedula);
+                return params;
             }
         };
 
-        queue.add(solicitud);
+        queue.add(stringRequest);
     }
 
-    private void procesarRespuesta(JSONArray puntajesArray) {
+
+
+
+
+
+
+    private void procesarRespuesta(String response) {
         try {
+            JSONObject jsonObject = new JSONObject(response);
+
+            // Obtiene el array de puntajes del objeto JSON
+            JSONArray puntajesArray = jsonObject.getJSONArray("puntajes");
             for (int i = 0; i < puntajesArray.length(); i++) {
                 JSONObject puntaje = puntajesArray.getJSONObject(i);
 

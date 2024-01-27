@@ -47,7 +47,7 @@ public class DetallePreguntas extends AppCompatActivity {
             int idPuntaje = datosUsuario.getInt("id_puntaje");
 
             // Utiliza Volley para realizar la solicitud POST
-            consumoPostJson("http://192.168.244.151/preguntas/ObtenerPreguntasPuntaje.php", String.valueOf(idPuntaje));
+            consumoPostJson("http://192.168.1.2/preguntas/ObtenerPreguntasPuntaje.php", String.valueOf(idPuntaje));
         } else {
             System.out.println("Error");
         }
