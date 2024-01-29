@@ -2,7 +2,11 @@ package com.example.primeraplicacion;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -17,8 +21,10 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.primeraplicacion.utils.config;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,11 +44,13 @@ public class PreguntasApi extends AppCompatActivity {
     ArrayList<String> respuestasUsuario;
     String nombre;
     String cedula;
+    config dataConfig;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preguntas_api);
+        dataConfig = new config(getApplicationContext());
 
         TextoDescripcion = findViewById(R.id.descripcion);
         Respuesta = findViewById(R.id.respuesta);
@@ -51,9 +59,11 @@ public class PreguntasApi extends AppCompatActivity {
         preguntas = new ArrayList<>();
         respuestasUsuario = new ArrayList<>();
         cargarPreguntasAleatorias();
-        Bundle datosUsuario = getIntent().getExtras();
-        nombre = datosUsuario.getString("nombreUsuario");
-        cedula = datosUsuario.getString("cedulaUsuario");
+
+        SharedPreferences archivo = getSharedPreferences("app_preguntas", Context.MODE_PRIVATE);
+        cedula = archivo.getString("cedulaUsuario",null);
+        nombre = archivo.getString("nombreUsuario",null);
+        System.out.println(cedula);
 
 
         buttonResponder.setOnClickListener(new View.OnClickListener() {
@@ -66,9 +76,9 @@ public class PreguntasApi extends AppCompatActivity {
 
     private void cargarPreguntasAleatorias() {
         RequestQueue queue = Volley.newRequestQueue(this);
-        //Sena 192.168.244.151
+        //Sena 192.168.109.151
         //Casa 192.168.1.2
-        String url = "http://192.168.1.2/preguntas/ObtenerPregunta.php";
+        String url =dataConfig.getEndPoint("/ObtenerPregunta.php");
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -80,7 +90,6 @@ public class PreguntasApi extends AppCompatActivity {
 
                             for (int i = 0; i < preguntasArray.length(); i++) {
                                 JSONObject preguntaJson = preguntasArray.getJSONObject(i);
-                                int idPregunta = preguntaJson.getInt("id_pregunta");
                                 String descripcion = preguntaJson.getString("descripcion");
 
                                 List<String> opciones = new ArrayList<>();
@@ -89,9 +98,8 @@ public class PreguntasApi extends AppCompatActivity {
                                     opciones.add(opcion);
                                 }
 
-                                int imagenResourceId = getResources().getIdentifier("imagen" + idPregunta, "drawable", getPackageName());
-
-                                preguntasAleatorias.add(new Pregunta(descripcion, opciones, imagenResourceId));
+                                String imagenUrl = preguntaJson.getString("imagen");
+                                preguntasAleatorias.add(new Pregunta(descripcion, opciones, imagenUrl));
                             }
 
                             Collections.shuffle(preguntasAleatorias);
@@ -117,18 +125,38 @@ public class PreguntasApi extends AppCompatActivity {
         queue.add(jsonObjectRequest);
     }
 
+
     private void mostrarPreguntaActual() {
         if (preguntaActualIndex < preguntas.size()) {
             Pregunta preguntaActual = preguntas.get(preguntaActualIndex);
 
             TextoDescripcion.setText(preguntaActual.getDescripcion());
             ImageView imageView = findViewById(R.id.imagenPregunta);
-            imageView.setImageResource(preguntaActual.getImagenResourceId());
+
+            RequestQueue queue = Volley.newRequestQueue(this);
+            ImageRequest imageRequest = new ImageRequest(
+                    preguntaActual.getImagenUrl(),
+                    new Response.Listener<Bitmap>() {
+                        @Override
+                        public void onResponse(Bitmap bitmap) {
+                            imageView.setImageBitmap(bitmap);
+                        }
+                    },
+                    0, 0, ImageView.ScaleType.CENTER_INSIDE, null,
+                    new Response.ErrorListener() {
+                        @SuppressLint("LongLogTag")
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.e("Error de carga de imagen", error.getMessage());
+                        }
+                    });
+
+            queue.add(imageRequest);
 
             Respuesta.removeAllViews();
 
             for (String respuesta : preguntaActual.getRespuestas()) {
-                if(!respuesta.equals("null")){
+                if (!respuesta.equals("null")) {
                     RadioButton radioButton = new RadioButton(getApplicationContext());
                     radioButton.setTextColor(getResources().getColor(R.color.black));
                     radioButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
@@ -136,18 +164,16 @@ public class PreguntasApi extends AppCompatActivity {
                     radioButton.setText(respuesta);
                     Respuesta.addView(radioButton);
                 }
-
             }
         } else {
             irARespuestas();
         }
     }
 
+
     private void irARespuestas() {
         Intent intencion = new Intent(getApplicationContext(), Respuestas.class);
         intencion.putStringArrayListExtra("opciones", respuestasUsuario);
-        intencion.putExtra("nombreUsuario", nombre);
-        intencion.putExtra("cedulaUsuario", cedula);
         startActivity(intencion);
         finish();
     }

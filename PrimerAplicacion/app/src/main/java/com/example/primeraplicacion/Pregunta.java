@@ -6,24 +6,25 @@ public class Pregunta {
     private String descripcion;
 
     private List<String> respuestas;
-    private int imagenResourceId;
+    private String imagenUrl;
 
-    public Pregunta(String descripcion, List<String> respuestas,int imagenResourceId) {
+    public Pregunta(String descripcion, List<String> respuestas, String imagenUrl) {
         this.descripcion = descripcion;
         this.respuestas = respuestas;
-        this.imagenResourceId = imagenResourceId;
+        this.imagenUrl = imagenUrl;
     }
 
     public String getDescripcion() {
         return descripcion;
     }
 
-    public List<String> getRespuestas() {
+    public List<String> getRespuestas()
+    {
         return respuestas;
     }
 
-    public int getImagenResourceId() {
-        return imagenResourceId;
+    public String getImagenUrl() {
+        return imagenUrl;
     }
 }
 

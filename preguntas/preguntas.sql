@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-12-2023 a las 13:32:36
--- Versión del servidor: 10.4.27-MariaDB
--- Versión de PHP: 8.2.0
+-- Tiempo de generación: 29-01-2024 a las 13:52:01
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -35,24 +35,25 @@ CREATE TABLE `preguntas` (
   `opcion1` text DEFAULT NULL,
   `opcion2` text DEFAULT NULL,
   `opcion3` text DEFAULT NULL,
-  `opcion4` text DEFAULT NULL
+  `opcion4` text DEFAULT NULL,
+  `imagen` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `preguntas`
 --
 
-INSERT INTO `preguntas` (`id_pregunta`, `descripcion`, `opcion1`, `opcion2`, `opcion3`, `opcion4`) VALUES
-(1, '¿HTML es un lenguaje de programacion?', 'Si', 'No', NULL, NULL),
-(2, '¿En qué año se llevó a cabo la Revolución Rusa?', '1917', '1933', '1921', '1905'),
-(3, '¿En qué año se celebró la independencia de Estados Unidos?', '1804', '1776', '1789', '1792'),
-(4, '¿Cuál es el río más largo del mundo?', 'Nilo', 'Amazonas', 'Yangtse', 'Misisipi'),
-(5, '¿Cuál es el elemento más abundante en la corteza terrestre?', 'Hierro', 'Oxigeno', 'Silicio', 'Aluminio'),
-(6, '¿En qué continente se encuentra el Monte Kilimanjaro?', 'Asia', 'Africa', 'Europa', 'Sudamerica'),
-(7, '¿Cuál es la capital de Japón?', 'Seul', 'Tokio', 'Pekín', 'Bangkok'),
-(8, '¿Quién escribió \'Cien años de soledad\'?', 'Gabriel García Marquez', 'Pablo Neruda', 'Mario Vargas Llosa', 'Isabel Allende'),
-(9, '¿Cuántos planetas hay en nuestro sistema solar?', '8', '10', '9', '7'),
-(10, '¿Qué famoso pintor creó la obra \'La noche estrellada\'?', 'Vincent van Gogh', 'Pablo Picasso', 'Leonardo da Vinci', 'Claude Monet');
+INSERT INTO `preguntas` (`id_pregunta`, `descripcion`, `opcion1`, `opcion2`, `opcion3`, `opcion4`, `imagen`) VALUES
+(1, '¿HTML es un lenguaje de programacion?', 'Si', 'No', NULL, NULL, 'https://www.ionos.es/digitalguide/fileadmin/DigitalGuide/Teaser/html-tagst.jpg'),
+(2, '¿En qué año se llevó a cabo la Revolución Rusa?', '1917', '1933', '1921', '1905', 'https://imagenes.elpais.com/resizer/_iGXk1x-9Wlr6bn1HqQS-t-QLlM=/1960x0/arc-anglerfish-eu-central-1-prod-prisa.s3.amazonaws.com/public/2AZ7ACD7I5Y47TLJKN4NVRPJJU.jpg'),
+(3, '¿En qué año se celebró la independencia de Estados Unidos?', '1804', '1776', '1789', '1792', 'https://historia.nationalgeographic.com.es/medio/2017/07/03/37673_04658188.jpg'),
+(4, '¿Cuál es el río más largo del mundo?', 'Nilo', 'Amazonas', 'Yangtse', 'Misisipi', 'https://www.fundacionaquae.org/wp-content/uploads/2017/05/riolargo.jpg'),
+(5, '¿Cuál es el elemento más abundante en la corteza terrestre?', 'Hierro', 'Oxigeno', 'Silicio', 'Aluminio', 'https://ichef.bbci.co.uk/news/640/amz/worldservice/live/assets/images/2016/01/04/160104124333_tabla_periodica_640x360_spl_nocredit.jpg'),
+(6, '¿En qué continente se encuentra el Monte Kilimanjaro?', 'Asia', 'Africa', 'Europa', 'Sudamerica', 'https://upload.wikimedia.org/wikipedia/commons/6/6b/Mt._Kilimanjaro_12.2006.JPG'),
+(7, '¿Cuál es la capital de Japón?', 'Seul', 'Tokio', 'Pekín', 'Bangkok', 'https://www.civitatis.com/blog/wp-content/uploads/2022/11/calle-akihabara-tokio.jpg'),
+(8, '¿Quién escribió \'Cien años de soledad\'?', 'Gabriel García Marquez', 'Pablo Neruda', 'Mario Vargas Llosa', 'Isabel Allende', 'https://www.researchgate.net/publication/332688417/figure/fig1/AS:752108177461249@1556327971858/Figura-1-Quinta-imagen-del-libro-Cien-anos-de-soledad-de-Gabriel-Garcia-Marquez.jpg'),
+(9, '¿Cuántos planetas hay en nuestro sistema solar?', '8', '10', '9', '7', 'https://www.semana.com/resizer/8W9cXOsC1jv-iPC-hMDEAw5bHh4=/1280x720/smart/filters:format(jpg):quality(80)/cloudfront-us-east-1.images.arcpublishing.com/semana/HNTZ5TVGYJGMFBSB7B72TWVR4U.jpg'),
+(10, '¿Qué famoso pintor creó la obra \'La noche estrellada\'?', 'Vincent van Gogh', 'Pablo Picasso', 'Leonardo da Vinci', 'Claude Monet', 'https://revistasietearteshome.files.wordpress.com/2019/01/descarga-5.jpg');
 
 -- --------------------------------------------------------
 
@@ -64,16 +65,8 @@ CREATE TABLE `puntajes` (
   `id_puntaje` int(11) NOT NULL,
   `id_usuario` int(11) DEFAULT NULL,
   `puntaje` int(11) DEFAULT NULL,
-  `fecha` date DEFAULT NULL
+  `fecha` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `puntajes`
---
-
-INSERT INTO `puntajes` (`id_puntaje`, `id_usuario`, `puntaje`, `fecha`) VALUES
-(2, 2, 5, '2023-12-04'),
-(3, 3, 9, '2023-12-04');
 
 -- --------------------------------------------------------
 
@@ -89,32 +82,6 @@ CREATE TABLE `respuestas_usuarios` (
   `intento` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `respuestas_usuarios`
---
-
-INSERT INTO `respuestas_usuarios` (`id_respuesta`, `id_pregunta`, `respuesta`, `id_usuario`, `intento`) VALUES
-(11, 7, 'Tokio', 2, 2),
-(12, 9, '8', 2, 2),
-(13, 4, 'Amazonas', 2, 2),
-(14, 1, 'Si', 2, 2),
-(15, 2, '1933', 2, 2),
-(16, 6, 'Asia', 2, 2),
-(17, 8, 'Pablo Neruda', 2, 2),
-(18, 5, 'Hierro', 2, 2),
-(19, 10, 'Leonardo da Vinci', 2, 2),
-(20, 3, '1776', 2, 2),
-(21, 8, 'Gabriel García Marquez', 3, 3),
-(22, 6, 'Africa', 3, 3),
-(23, 3, '1776', 3, 3),
-(24, 2, '1917', 3, 3),
-(25, 9, '8', 3, 3),
-(26, 1, 'No', 3, 3),
-(27, 4, 'Amazonas', 3, 3),
-(28, 5, 'Oxigeno', 3, 3),
-(29, 7, 'Tokio', 3, 3),
-(30, 10, 'Vincent van Gogh', 3, 3);
-
 -- --------------------------------------------------------
 
 --
@@ -126,14 +93,6 @@ CREATE TABLE `usuarios` (
   `numero_cedula` varchar(20) NOT NULL,
   `nombre` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `usuarios`
---
-
-INSERT INTO `usuarios` (`id_usuario`, `numero_cedula`, `nombre`) VALUES
-(2, '1088247454', 'david'),
-(3, '555', 'fefi');
 
 --
 -- Índices para tablas volcadas
@@ -175,19 +134,19 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `puntajes`
 --
 ALTER TABLE `puntajes`
-  MODIFY `id_puntaje` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_puntaje` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `respuestas_usuarios`
 --
 ALTER TABLE `respuestas_usuarios`
-  MODIFY `id_respuesta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id_respuesta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- Restricciones para tablas volcadas

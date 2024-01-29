@@ -2,7 +2,9 @@ package com.example.primeraplicacion;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.TextView;
@@ -13,6 +15,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.primeraplicacion.utils.config;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +30,7 @@ public class Respuestas extends AppCompatActivity {
     String[] respuestasCorrectas = {"No","1776","Amazonas","Hierro","Africa","Tokio","Gabriel García Marquez","8","Vincent van Gogh","1917"};
     String nombre;
     String cedula;
+    config dataConfig;
 
 
     @Override
@@ -34,18 +38,17 @@ public class Respuestas extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_respuestas);
 
-        // Obtener respuestas y datos del usuario desde el Intent
         ArrayList<String> opciones = getIntent().getStringArrayListExtra("opciones");
-        Bundle datosUsuario = getIntent().getExtras();
-        nombre = datosUsuario.getString("nombreUsuario");
-        cedula = datosUsuario.getString("cedulaUsuario");
+        SharedPreferences archivo = getSharedPreferences("app_preguntas", Context.MODE_PRIVATE);
+        cedula = archivo.getString("cedulaUsuario",null);
+        nombre = archivo.getString("nombreUsuario",null);
+        dataConfig = new config(getApplicationContext());
 
-        // Almacenar respuestas en el array
         for (int i = 0; i < opciones.size() && i < respuestas.length; i++) {
             respuestas[i] = opciones.get(i);
         }
 
-        // Verificar respuestas y calcular puntaje
+
         int puntaje = 0;
         for (int i = 0; i < respuestas.length; i++) {
             boolean correcta = false;
@@ -83,8 +86,6 @@ public class Respuestas extends AppCompatActivity {
         } else {
             puntajes.setText("Usted perdió con un puntaje de: " + puntaje);
         }
-
-        // Enviar respuestas y puntaje al servidor PHP
         enviarRespuestasYPuntaje(cedula, convertirRespuestasAMap(), puntaje);
     }
     private Map<String, String> convertirRespuestasAMap() {
@@ -97,7 +98,8 @@ public class Respuestas extends AppCompatActivity {
 
     public void enviarRespuestasYPuntaje(String cedula, Map<String, String> respuestas, int puntaje) {
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        String url = "http://192.168.1.2/preguntas/InsertRespuestas.php";
+        String url = dataConfig.getEndPoint("/InsertRespuestas.php");
+
 
         JSONObject jsonBody = new JSONObject();
         try {
@@ -119,8 +121,6 @@ public class Respuestas extends AppCompatActivity {
                             public void run() {
                                 // Código que se ejecutará después de 5 segundos
                                 Intent intencion = new Intent(getApplicationContext(), Puntajes.class);
-                                intencion.putExtra("nombreUsuario", nombre);
-                                intencion.putExtra("cedulaUsuario", cedula);
                                 startActivity(intencion);
                                 finish();
                             }

@@ -1,6 +1,9 @@
 package com.example.primeraplicacion;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -17,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.primeraplicacion.utils.config;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,6 +31,7 @@ import java.io.UnsupportedEncodingException;
 public class DetallePreguntas extends AppCompatActivity {
 
     private TableLayout tableLayoutDetalle;
+    config dataConfig;
 
     String nombre;
     String cedula;
@@ -36,18 +41,17 @@ public class DetallePreguntas extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_preguntas);
-
+        dataConfig = new config(getApplicationContext());
         tableLayoutDetalle = findViewById(R.id.tableLayoutDetalle);
         Bundle datosUsuario = getIntent().getExtras();
         if (datosUsuario != null) {
-            nombre = datosUsuario.getString("nombreUsuario");
-            cedula = datosUsuario.getString("cedulaUsuario");
+            SharedPreferences archivo = getSharedPreferences("app_preguntas", Context.MODE_PRIVATE);
+            cedula = archivo.getString("cedulaUsuario",null);
+            nombre = archivo.getString("nombreUsuario",null);
 
-            // Obtener el id_puntaje de la actividad anterior
             int idPuntaje = datosUsuario.getInt("id_puntaje");
 
-            // Utiliza Volley para realizar la solicitud POST
-            consumoPostJson("http://192.168.1.2/preguntas/ObtenerPreguntasPuntaje.php", String.valueOf(idPuntaje));
+            consumoPostJson(dataConfig.getEndPoint("/ObtenerPreguntasPuntaje.php"), String.valueOf(idPuntaje));
         } else {
             System.out.println("Error");
         }
@@ -141,8 +145,6 @@ public class DetallePreguntas extends AppCompatActivity {
         textView.setGravity(gravedad);
         textView.setMaxLines(2);
         textView.setTextSize(14);
-
-        // Establecer un pequeño margen inferior
         int margenInferior = getResources().getDimensionPixelSize(R.dimen.margen_inferior_entre_filas);
         textView.setPadding(0, 0, 0, margenInferior);
 
