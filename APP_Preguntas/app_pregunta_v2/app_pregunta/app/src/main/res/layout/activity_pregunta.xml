@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<FrameLayout
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".DetalleCuestionario"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/etq_nombre_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="WINDER ALEXANDER ROMAN"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            />
+
+        <TextView
+            android:id="@+id/fecha_inicio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Inicio: 2024-02-04 02:27:22"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            />
+
+        <TextView
+            android:id="@+id/etq_pregunta_actual"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pregunta Actual: 1"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20sp"
+            android:layout_marginBottom="10sp"
+            android:background="#7E7979"
+            />
+
+        <TextView
+            android:id="@+id/etq_titulo_pregunta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="¿Que significa HTML?"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/black"
+            />
+
+        <LinearLayout
+            android:id="@+id/linear_layout_img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+
+
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <!-- Aquí es donde se agregarán los RadioButtons  -->
+
+        </RadioGroup>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20sp"
+            android:background="#7E7979"
+            />
+
+        <Button
+            android:id="@+id/btn_siguiente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Siguiente"
+            android:textSize="25sp"
+            android:layout_marginTop="50sp"
+            android:layout_gravity="center"
+            android:backgroundTint="#1AA51F"
+            />
+
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:srcCompat="@drawable/icon_back"
+        android:tooltipText="Regresar"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="20dp"
+        app:backgroundTint="#8C8787"
+        app:tint="#2B46E1"
+        app:maxImageSize="35dp"
+        app:fabCustomSize="50dp"
+        />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+</FrameLayout>
+</ScrollView>

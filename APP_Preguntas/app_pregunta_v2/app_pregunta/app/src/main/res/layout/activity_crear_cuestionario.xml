@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity"
+    android:padding="20dp"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="NUEVO CUESTIONARIO"
+        android:textSize="35dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:layout_marginBottom="30dp"
+        android:textColor="#26AAE1"
+        />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@mipmap/ic_preguntas_round"
+        android:layout_gravity="center"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Usuario:"
+        android:gravity="center"
+        android:textSize="25sp"
+        android:layout_marginTop="20dp"
+        />
+
+    <TextView
+        android:id="@+id/etq_nombre_usuario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fecha inicio:"
+        android:gravity="center"
+        android:textSize="25sp"
+        android:layout_marginTop="20dp"
+        />
+
+    <TextView
+        android:id="@+id/etq_fecha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="40sp"
+        android:layout_marginTop="20dp"
+        />
+
+
+
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="EMPEZAR"
+        android:textSize="25sp"
+        android:layout_marginTop="50sp"
+        android:layout_gravity="center"
+        android:backgroundTint="#247d9b"
+        android:onClick="create_cuestion"
+        />
+
+
+
+</LinearLayout>
